@@ -113,7 +113,7 @@ const data =  {
 const styles = {
   resumeContent: {
     maxWidth: 'calc(min(760px,100%))',
-    margin: "0 auto",
+    margin: "50px auto",
   },
   title: {
     textAlign: 'center',
@@ -169,6 +169,28 @@ const styles = {
   },
   tableCell: {
     //flex: 1,
+  },
+  downloadBtn: {
+    position: "fixed",
+    bottom: "20px",
+    right: "20px",
+    backgroundColor: "#3498db",
+    color: "white",
+    border: "none",
+    borderRadius: "50%",
+    width: "60px",
+    height: "60px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    cursor: "pointer",
+    transition: "background-color 0.3s ease",
+  },
+  downloadIcon: {
+    fill: "white",
+    width: "24px",
+    height: "24px"
   }
 }
 
