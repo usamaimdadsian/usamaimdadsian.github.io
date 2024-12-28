@@ -5,8 +5,8 @@ const nextConfig = {
   images: {
     unoptimized: true, // Disable default image optimization
   },
-  assetPrefix: isProd ? '/usamaimdadsian.github.io/' : '',
-  basePath: isProd ? '/usamaimdadsian.github.io' : '',
+  assetPrefix: isProd ? '' : '',
+  basePath: isProd ? '' : '',
   output: 'export'
 };
 export default nextConfig;
