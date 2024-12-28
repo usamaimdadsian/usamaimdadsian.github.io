@@ -1,18 +1,34 @@
 "use client";
 import React,{ useState, useRef } from "react";
 import { data, styles } from "./data";
-import {Svg,Line, Document, Page, Text, View, StyleSheet, PDFDownloadLink, pdf, Link } from "@react-pdf/renderer";
+import {Font, Svg,Line, Document, Page, Text, View, StyleSheet, PDFDownloadLink, pdf, Link } from "@react-pdf/renderer";
 import "./page.module.css"
+//import arial from "./fonts/ArialCE.ttf"
+//import arialbold from "./fonts/arialceb.ttf"
+//import arialitalic from "./fonts/ArialCEItalic.ttf"
+//import arialbolditalic from "./fonts/ArialCEBoldItalic.ttf"
 // Function Implementation
 export default function Home() {
   const elementRef = useRef()
   const [downloading, setDownloading] = useState(false)
+  // Font Registeration
+  Font.register({
+    family: "Arial",
+    format: "truetype",
+    fonts: [
+      {src: "/fonts/ArialCE.ttf", format: "truetype"},
+      {src: "/fonts/arialceb.ttf", fontWeight: 'bold',format: "truetype"},
+      {src: "/fonts/ArialCEItalic.ttf", fontStyle: 'italic', format: "truetype"},
+      {src: "/fonts/ArialCEBoldItalic.ttf", fontStyle: 'italic', fontWeight:'bold',format: "truetype"},
+    ]
+  })
   // PDF document styles
   const pageStyles = StyleSheet.create({
     ...styles,
     page:{
       fontSize: "10px",
-      padding: "30px"
+      padding: "30px",
+      fontFamily: "Arial"
     },
     title: {
       ...styles.title,
@@ -42,7 +58,7 @@ export default function Home() {
     <Document>
       <Page size="A4" style={pageStyles.page}>
         <View style={pageStyles.title}>
-          <Text style={{fontSize: '16px', fontWeight: "bolder"}}>{data.name}</Text>
+          <Text style={{fontSize: '16px', fontWeight: "bold"}}>{data.name}</Text>
           <Text>{data.location} | {data.number} | <Link src={"mailto:"+data.email}>{data.email}</Link> | <Link src={data.linkedinLink}> {data.linkedinName}</Link></Text>
         </View>
         <View>
