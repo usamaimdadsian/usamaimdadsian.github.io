@@ -38,18 +38,18 @@ export default function Home() {
       ...styles.h2Heading,
       fontWeight: "bold",
       fontSize: '12px',
-      marginTop: "10px"
+      marginTop: "5px"
     },
     headingItem: {
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginTop: "5px"
+      marginTop: "3px"
     },
     listItem: {
       ...styles.listItem,
       display: "flex",
-      marginBottom: "5px",
+      marginBottom: "3px",
       flexDirection: "row",
     },
   })
@@ -93,7 +93,7 @@ export default function Home() {
                 <View style={{...pageStyles.table, margin:"5px 0px"}}>
                   {sec?.skills?.map((skill,skillInd) => (
                     <View key={skillInd} style={pageStyles.tableRow}>
-                      <View style={{...pageStyles.tableCell, flex:0.3}}><Text>{skill.key}</Text></View>
+                      <View style={{...pageStyles.tableCell, flex:0.3}}><Text style={{fontWeight:"bold"}}>{skill.key}:</Text></View>
                       <View style={{...pageStyles.tableCell, flex:0.7}}><Text>{skill.value}</Text></View>
                     </View>
                   ))}
@@ -103,8 +103,8 @@ export default function Home() {
                 <View style={{...pageStyles.table, margin: "5px 0px", width:"100%"}}>
                 {sec.certifications?.map((cert,certId) => (
                   <View style={pageStyles.tableRow} key={certId}>
-                    <View style={{...pageStyles.tableCell, flex: 0.4}}><Text>{cert.name}</Text></View>
-                    <View style={{...pageStyles.tableCell, flex: 0.3}}><Link src={cert.link}>{cert.linkName}</Link></View>
+                    <View style={{...pageStyles.tableCell, flex: 0.4}}><Text style={{fontWeight:"bold"}}>{cert.name}</Text></View>
+                    <View style={{...pageStyles.tableCell, flex: 0.3, marginLeft:"10px"}}><Link src={cert.link}>{cert.linkName}</Link></View>
                     <View style={{...pageStyles.tableCell, flex: 0.3, textAlign:"right"}}><Text>{cert.date}</Text></View>
                   </View>
                 ))}
@@ -168,8 +168,8 @@ export default function Home() {
                 <div style={{...styles.table, margin:"10px 0px"}}>
                   {sec.skills?.map((skill,skillInd) => (
                     <div key={skillInd} style={styles.tableRow}>
-                      <div style={{...styles.tableCell, flex: 0.3}}><b>{skill.key}:</b></div>
-                      <div style={{...styles.tableCell,flex: 0.7}}>{skill.value}</div>
+                      <div style={{...styles.tableCell, flex: 0.3, padding:"0px 5px"}}><b>{skill.key}:</b></div>
+                      <div style={{...styles.tableCell,flex: 0.7, padding:"0px 5px"}}>{skill.value}</div>
                     </div>
                   ))}
                 </div>
@@ -178,9 +178,9 @@ export default function Home() {
                 <div style={{...styles.table, margin: "10px 0px", width:"100%"}}>
                 {sec.certifications?.map((cert,certId) => (
                   <div style={styles.tableRow} key={certId}>
-                    <div style={{...styles.tableCell, flex: 0.4}}><b>{cert.name}</b></div>
-                    <div style={{...styles.tableCell, flex: 0.3}}><a style={{textDecoration:"underline"}} href={cert.link}>{cert.linkName}</a></div>
-                    <div style={{...styles.tableCell, flex: 0.3, textAlign:"right"}}>{cert.date}</div>
+                    <div style={{...styles.tableCell, flex: 0.4, padding:"0px 5px"}}><b>{cert.name}</b></div>
+                    <div style={{...styles.tableCell, flex: 0.3, padding:"0px 5px"}}><a style={{textDecoration:"underline"}} href={cert.link}>{cert.linkName}</a></div>
+                    <div style={{...styles.tableCell, flex: 0.3, textAlign:"right", padding:"0px 5px"}}>{cert.date}</div>
                   </div>
                 ))}
                 </div>
