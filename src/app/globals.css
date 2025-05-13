@@ -19,10 +19,17 @@ body {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: monospace, Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  max-width: calc(min(760px, 100%));
+  padding: 25px;
+  margin: auto;
+
 }
+
+
 
 * {
   box-sizing: border-box;
@@ -35,11 +42,43 @@ a {
   text-decoration: none;
 }
 
+h1 {
+  margin-bottom: 10px;
+}
+
+p {
+  margin-bottom: 5px;
+}
+
+.social-icon {
+  width: 30px;
+  height: 30px;
+  margin: 0px 5px
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
+ .nav-bar {
+    background-color: #303030;
+  }
 }
+
+@media (prefers-color-scheme: light) {
+  html {
+    color-scheme: light;
+  }
+ .nav-bar {
+    background-color:  #eee;
+  }
+}
+
+
+.nav-bar a {
+  color: #2892fc;
+}
+
 
 .download-btn {
   position: fixed;
