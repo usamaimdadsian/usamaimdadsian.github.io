@@ -1,3 +1,5 @@
+import styles from "./Social.module.css";
+
 const links = [
   {
     href: "https://x.com/UsamaImdadSian/",
@@ -48,23 +50,23 @@ const links = [
 
 export default function Social() {
   return (
-    <section className="social-panel" aria-label="Social links">
-      <div className="social-panel__header">
-        <p className="portfolio-kicker">Connect</p>
-        <h2 className="social-panel__title">Profiles and platforms</h2>
+    <section className={styles.panel} aria-label="Social links">
+      <div className={styles.header}>
+        <p className={styles.kicker}>Connect</p>
+        <h2 className={styles.title}>Profiles and platforms</h2>
       </div>
-      <div className="social-links">
+      <div className={styles.links}>
         {links.map((link) => (
           <a
             key={link.label}
-            className="social-link"
+            className={styles.link}
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={link.label}
           >
-            <span className="social-link__icon">{link.icon}</span>
-            <span className="social-link__label">{link.label}</span>
+            <span className={styles.icon}>{link.icon}</span>
+            <span className={styles.label}>{link.label}</span>
           </a>
         ))}
       </div>

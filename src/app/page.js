@@ -1,84 +1,85 @@
 import Link from "next/link";
 import Social from "@/components/Social";
 import { capabilityCards, featuredWork, quickStats } from "@/components/portfolioContent";
+import styles from "./home.module.css";
 
 export default function Home() {
   return (
-    <div className="portfolio-page">
-      <section className="portfolio-hero">
-        <div className="portfolio-hero__copy">
-          <p className="portfolio-kicker">Portfolio</p>
-          <h1 className="portfolio-hero__title">Machine learning and full stack systems built for real-world delivery.</h1>
-          <p className="portfolio-hero__description">
+    <div className={styles.page}>
+      <section className={styles.hero}>
+        <div className={styles.heroCopy}>
+          <p className={styles.kicker}>Portfolio</p>
+          <h1 className={styles.heroTitle}>Machine learning and full stack systems built for real-world delivery.</h1>
+          <p className={styles.heroDescription}>
             Usama Imdad builds products across computer vision, web applications, automation, and deployment workflows with a
             focus on practical execution.
           </p>
-          <div className="portfolio-hero__actions">
-            <Link className="portfolio-button portfolio-button--primary" href="/projects">
+          <div className={styles.actions}>
+            <Link className={`${styles.button} ${styles.buttonPrimary}`} href="/projects">
               Explore Projects
             </Link>
-            <Link className="portfolio-button portfolio-button--secondary" href="/resume">
+            <Link className={`${styles.button} ${styles.buttonSecondary}`} href="/resume">
               Open Resume
             </Link>
-            <Link className="portfolio-button portfolio-button--ghost" href="/about">
+            <Link className={`${styles.button} ${styles.buttonGhost}`} href="/about">
               About Me
             </Link>
           </div>
         </div>
-        <div className="portfolio-hero__panel">
-          <p className="portfolio-panel__eyebrow">Current focus</p>
-          <div className="portfolio-stats">
+        <div className={styles.panel}>
+          <p className={styles.eyebrow}>Current focus</p>
+          <div className={styles.stats}>
             {quickStats.map((stat) => (
-              <div key={stat.label} className="portfolio-stat">
-                <span className="portfolio-stat__label">{stat.label}</span>
-                <strong className="portfolio-stat__value">{stat.value}</strong>
+              <div key={stat.label} className={styles.stat}>
+                <span className={styles.statLabel}>{stat.label}</span>
+                <strong className={styles.statValue}>{stat.value}</strong>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="portfolio-section">
-        <div className="portfolio-section__header">
-          <p className="portfolio-kicker">Capabilities</p>
-          <h2 className="portfolio-section__title">A technical mix that spans models, interfaces, and deployment.</h2>
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <p className={styles.kicker}>Capabilities</p>
+          <h2 className={styles.sectionTitle}>A technical mix that spans models, interfaces, and deployment.</h2>
         </div>
-        <div className="portfolio-grid portfolio-grid--capabilities">
+        <div className={styles.grid}>
           {capabilityCards.map((card) => (
-            <article key={card.title} className="portfolio-card">
-              <h3 className="portfolio-card__title">{card.title}</h3>
-              <p className="portfolio-card__description">{card.description}</p>
+            <article key={card.title} className={styles.card}>
+              <h3 className={styles.cardTitle}>{card.title}</h3>
+              <p className={styles.cardDescription}>{card.description}</p>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="portfolio-section portfolio-section--accent">
-        <div className="portfolio-section__header">
-          <p className="portfolio-kicker">Selected Work</p>
-          <h2 className="portfolio-section__title">Existing experience reframed into the work areas that matter most.</h2>
+      <section className={`${styles.section} ${styles.sectionAccent}`}>
+        <div className={styles.sectionHeader}>
+          <p className={styles.kicker}>Selected Work</p>
+          <h2 className={styles.sectionTitle}>Existing experience reframed into the work areas that matter most.</h2>
         </div>
-        <div className="portfolio-grid portfolio-grid--featured">
+        <div className={styles.grid}>
           {featuredWork.map((item) => (
-            <article key={item.title} className="portfolio-card portfolio-card--featured">
-              <h3 className="portfolio-card__title">{item.title}</h3>
-              <p className="portfolio-card__description">{item.description}</p>
+            <article key={item.title} className={`${styles.card} ${styles.cardFeatured}`}>
+              <h3 className={styles.cardTitle}>{item.title}</h3>
+              <p className={styles.cardDescription}>{item.description}</p>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="portfolio-section portfolio-section--split">
-        <div className="portfolio-section__copy">
-          <p className="portfolio-kicker">Profile</p>
-          <h2 className="portfolio-section__title">A builder focused on useful systems, not demo-only work.</h2>
-          <p className="portfolio-section__text">
+      <section className={`${styles.section} ${styles.sectionSplit}`}>
+        <div>
+          <p className={styles.kicker}>Profile</p>
+          <h2 className={styles.sectionTitle}>A builder focused on useful systems, not demo-only work.</h2>
+          <p className={styles.sectionText}>
             The portfolio combines machine learning work, web product delivery, automation, and infrastructure experience
             into one engineering profile. The underlying pattern is consistent: solve difficult problems and ship systems that
             are actually usable.
           </p>
         </div>
-        <div className="portfolio-section__side">
+        <div>
           <Social />
         </div>
       </section>
