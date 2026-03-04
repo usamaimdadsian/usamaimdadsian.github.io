@@ -1,5 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import Link from "next/link";
+import SiteFrame from "@/components/SiteFrame";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,11 +20,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <div style={{marginBottom:"10px", padding: "10px", textAlign:"center"}} className="nav-bar">
-          <Link href="/">HOME</Link> | <Link href="/projects">PROJECTS</Link> | <Link href="/resume">RESUME</Link> | <Link href="/about">ABOUT ME</Link>
-        </div>
-        {children}
+      <body className={`${geistSans.variable} ${geistMono.variable} site-body`}>
+        <SiteFrame>{children}</SiteFrame>
       </body>
     </html>
   );
