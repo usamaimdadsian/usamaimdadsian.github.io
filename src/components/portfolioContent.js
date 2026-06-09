@@ -71,7 +71,7 @@ export const aboutSections = [
   {
     title: "Background",
     description:
-      "Usama Imdad is from Hafizabad, Pakistan, with a Bachelor's in Computer Engineering and a Master's in Data Science.",
+      "Usama Imdad is an engineer with experience across applied machine learning, web products, automation, and deployment workflows.",
   },
   {
     title: "What He Builds",
@@ -88,6 +88,6 @@ export const aboutSections = [
 export const quickStats = [
   { label: "Experience", value: "4+ years" },
   { label: "Focus", value: "ML + Full Stack" },
-  { label: "Base", value: "Lahore, Pakistan" },
-  { label: "Education", value: "Data Science" },
+  { label: "Work Style", value: "Product-focused" },
+  { label: "Strength", value: "Practical delivery" },
 ];

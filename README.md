@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Usama Resume
 
-## Getting Started
+Next.js portfolio with a protected admin-only resume generator.
 
-First, run the development server:
+## Resume Privacy Model
+
+The public site does not store or render resume versions. Public visitors only see general profile information at `/resume`.
+
+Full resume data lives in Strapi as `Resume Version` records. The admin area at `/admin/resume` logs in with a Strapi Users & Permissions email/password, fetches resume data through protected Next API routes, and generates the PDF in the browser.
+
+Required environment variables are listed in `env.sample`:
+
+```bash
+STRAPI_URL=http://localhost:1337
+```
+
+Create the admin login user in Strapi under Users & Permissions, then give the authenticated role read access to `Resume Version`. The public role should not have access to `Resume Version`. Do not commit `.env.local`.
+
+## Development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Deployment Note
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This app uses server routes for authentication and protected Strapi access, so it is no longer compatible with static-only GitHub Pages export for the protected resume workflow. Deploy it to a server-capable Next host such as Vercel, a VPS, or another Node/serverless platform.

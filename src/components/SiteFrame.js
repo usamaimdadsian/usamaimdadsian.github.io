@@ -13,7 +13,7 @@ const navItems = [
 
 export default function SiteFrame({ children }) {
   const pathname = usePathname();
-  const isResumeRoute = pathname.startsWith("/resume");
+  const isResumeRoute = pathname.startsWith("/resume") || pathname.startsWith("/admin/resume");
   const shellClassName = `${styles.shell} ${isResumeRoute ? styles.resumeShell : styles.portfolioShell}`;
   const navClassName = `${styles.nav} ${isResumeRoute ? styles.resumeNav : styles.portfolioNav}`;
   const mainClassName = `${styles.main} ${isResumeRoute ? styles.resumeMain : styles.portfolioMain}`;

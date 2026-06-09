@@ -27,7 +27,7 @@ body {
     radial-gradient(circle at top left, rgba(66, 166, 255, 0.16), transparent 30%),
     radial-gradient(circle at top right, rgba(65, 240, 255, 0.14), transparent 25%),
     linear-gradient(180deg, #09111d 0%, #08111f 42%, #0a1323 100%);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

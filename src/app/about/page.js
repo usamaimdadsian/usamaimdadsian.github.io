@@ -23,8 +23,8 @@ export default function About() {
           <p className={styles.kicker}>About</p>
           <h1 className={styles.heroTitle}>Engineering across machine learning, product delivery, and deployment.</h1>
           <p className={styles.heroDescription}>
-            Hello, my name is Usama Imdad. I am from a village in Hafizabad, Pakistan. I have a Bachelor&apos;s in Computer
-            Engineering and a Master&apos;s in Data Science.
+            Hello, my name is Usama Imdad. I build practical software across machine learning, full stack systems,
+            automation, and deployment workflows.
           </p>
           <div className={styles.stats}>
             {quickStats.map((stat) => (

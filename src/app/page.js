@@ -19,7 +19,7 @@ export default function Home() {
               Explore Projects
             </Link>
             <Link className={`${styles.button} ${styles.buttonSecondary}`} href="/resume">
-              Open Resume
+              Resume Access
             </Link>
             <Link className={`${styles.button} ${styles.buttonGhost}`} href="/about">
               About Me
