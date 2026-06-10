@@ -1,4 +1,5 @@
-import Link from "next/link";
+import Chrome from "@/components/terminal/Chrome";
+import DocBack from "@/components/terminal/DocBack";
 import { getRepositoryReadme, GITHUB_OWNER } from "@/lib/github";
 import { getProject, getProjectSlugs } from "@/lib/strapi";
 import { markdownToHtml } from "@/lib/markdown";
@@ -56,22 +57,29 @@ export default async function ProjectDetailPage({ params }) {
   if (!project) {
     const repoUrl = `https://github.com/${GITHUB_OWNER}/${repo}`;
     return (
-      <div className="doc">
-        <div className="doc__inner">
-          <Link className="doc__back" href="/projects">← back to projects</Link>
-          <p className="doc__kicker">cat ~/projects/{repo}/README.md</p>
-          <h1 className="doc__title">{repo}</h1>
-          <p className="doc__desc">
-            This project couldn&apos;t be loaded right now — the backend was unavailable. You can
-            still open the repository directly on GitHub.
-          </p>
-          <div className="doc__actions">
-            <a className="doc__btn" href={repoUrl} target="_blank" rel="noopener noreferrer">
-              Open on GitHub ↗
-            </a>
+      <Chrome>
+        <div className="doc">
+          <div className="doc__inner">
+            <DocBack href="/projects">← back to projects</DocBack>
+            <p className="doc__kicker">cat ~/projects/{repo}/README.md</p>
+            <h1 className="doc__title">{repo}</h1>
+            <p className="doc__desc">
+              This project couldn&apos;t be loaded right now — the backend was
+              unavailable. You can still open the repository directly on GitHub.
+            </p>
+            <div className="doc__actions">
+              <a
+                className="doc__btn"
+                href={repoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Open on GitHub ↗
+              </a>
+            </div>
           </div>
         </div>
-      </div>
+      </Chrome>
     );
   }
 
@@ -80,48 +88,73 @@ export default async function ProjectDetailPage({ params }) {
   const topics = Array.isArray(project.topics) ? project.topics : [];
 
   return (
-    <div className="doc">
-      <div className="doc__inner">
-        <Link className="doc__back" href="/">← back to ~/portfolio</Link>
+    <Chrome>
+      <div className="doc">
+        <div className="doc__inner">
+          <DocBack href="/projects">← back to projects</DocBack>
 
-        <p className="doc__kicker">cat ~/projects/{project.name}/README.md</p>
-        <h1 className="doc__title">{project.name}</h1>
-        <p className="doc__desc">{project.description}</p>
+          <p className="doc__kicker">cat ~/projects/{project.name}/README.md</p>
+          <h1 className="doc__title">{project.name}</h1>
+          <p className="doc__desc">{project.description}</p>
 
-        <div className="doc__actions">
-          <a className="doc__btn" href={project.htmlUrl} target="_blank" rel="noopener noreferrer">
-            Open Repository ↗
-          </a>
-          {project.homepage ? (
-            <a className="doc__btn" href={project.homepage} target="_blank" rel="noopener noreferrer">
-              Live Link ↗
+          <div className="doc__actions">
+            <a
+              className="doc__btn"
+              href={project.htmlUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open Repository ↗
             </a>
-          ) : null}
-        </div>
-
-        <div className="doc__meta">
-          <span>owner <b>{GITHUB_OWNER}</b></span>
-          <span>lang <b>{project.language || "—"}</b></span>
-          <span>updated <b>{formatDate(project.pushedAt)}</b></span>
-          <span>★ <b>{project.stars ?? 0}</b></span>
-        </div>
-
-        {topics.length > 0 ? (
-          <div className="doc__topics">
-            {topics.map((topic) => (
-              <span key={topic} className="doc__topic">{topic}</span>
-            ))}
+            {project.homepage ? (
+              <a
+                className="doc__btn"
+                href={project.homepage}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Live Link ↗
+              </a>
+            ) : null}
           </div>
-        ) : null}
 
-        {articleHtml ? (
-          <article className="doc__article" dangerouslySetInnerHTML={{ __html: articleHtml }} />
-        ) : (
-          <article className="doc__article">
-            <p>No README content is available for this repository.</p>
-          </article>
-        )}
+          <div className="doc__meta">
+            <span>
+              owner <b>{GITHUB_OWNER}</b>
+            </span>
+            <span>
+              lang <b>{project.language || "—"}</b>
+            </span>
+            <span>
+              updated <b>{formatDate(project.pushedAt)}</b>
+            </span>
+            <span>
+              ★ <b>{project.stars ?? 0}</b>
+            </span>
+          </div>
+
+          {topics.length > 0 ? (
+            <div className="doc__topics">
+              {topics.map((topic) => (
+                <span key={topic} className="doc__topic">
+                  {topic}
+                </span>
+              ))}
+            </div>
+          ) : null}
+
+          {articleHtml ? (
+            <article
+              className="doc__article"
+              dangerouslySetInnerHTML={{ __html: articleHtml }}
+            />
+          ) : (
+            <article className="doc__article">
+              <p>No README content is available for this repository.</p>
+            </article>
+          )}
+        </div>
       </div>
-    </div>
+    </Chrome>
   );
 }

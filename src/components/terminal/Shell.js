@@ -15,8 +15,10 @@ const COMMANDS = {
   ls: "list projects",
   projects: "show projects pane",
   open: "open <project|social>  e.g. open github",
-  resume: "show experience timeline",
-  skills: "show skills",
+  experience: "work experience timeline",
+  resume: "alias of experience",
+  qualifications: "skills, education & certifications",
+  skills: "alias of qualifications",
   contact: "show contact + socials",
   neofetch: "alias of about",
   theme: "theme <name>  (tomorrow|dracula|github|matrix|solarized)",
@@ -41,7 +43,7 @@ export function runCommand(raw, ctx, projects) {
           ([k, v]) => `  ${k.padEnd(10)} ${v}`
         ),
         "",
-        "windows: 0 dashboard · 1 about · 2 projects · 3 skills · 4 resume · 5 contact",
+        "windows: 0 dashboard · 1 about · 2 projects · 3 qualifications · 4 experience · 5 contact",
         "press a number to jump · click a pane · arrows/hjkl move focus, f/enter open",
         "inside a pane: scroll to the next pane · esc or backspace go back to dashboard",
       ]);
@@ -53,14 +55,19 @@ export function runCommand(raw, ctx, projects) {
     case "ls":
     case "projects":
       ctx.go("/projects");
-      return ok(projects.map((p) => `${p.perm}  ${p.year}  ${p.name}/`));
+      return ok(projects.map((p) => `${p.year}  ${p.name}`));
     case "skills":
-      ctx.go("/skills");
-      return ok(["→ opening skills"]);
+    case "qualifications":
+    case "education":
+    case "certs":
+    case "certifications":
+      ctx.go("/qualifications");
+      return ok(["→ opening qualifications"]);
+    case "experience":
     case "resume":
     case "cv":
-      ctx.go("/resume");
-      return ok(["→ opening resume"]);
+      ctx.go("/experience");
+      return ok(["→ opening work experience"]);
     case "contact":
     case "socials":
       ctx.go("/contact");

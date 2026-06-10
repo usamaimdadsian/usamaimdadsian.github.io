@@ -99,7 +99,7 @@ export function ProjectsPane({ projects, onOpen }) {
   if (!projects || projects.length === 0) {
     return (
       <div>
-        <Prompt cmd="ls -la ~/projects" />
+        <Prompt cmd="ls ~/projects" />
         <div style={{ color: "var(--red)" }}>ls: cannot access ~/projects: backend unavailable</div>
         <div style={{ color: "var(--fg-dim)", marginTop: 6, fontSize: "0.9em" }}>
           The Strapi backend isn&apos;t reachable. Start it and it will sync projects from GitHub.
@@ -110,7 +110,7 @@ export function ProjectsPane({ projects, onOpen }) {
   return (
     <div>
       <Prompt cmd="ls -la ~/projects" />
-      <div style={{ color: "var(--fg-dim)", marginBottom: 6 }}>total {projects.length}</div>
+      <div style={{ color: "var(--fg-dim)", marginBottom: 6 }}>{projects.length} repositories</div>
       {projects.map((pr) => (
         <div
           key={pr.slug}
@@ -118,11 +118,11 @@ export function ProjectsPane({ projects, onOpen }) {
           className="proj-row"
           style={{ cursor: "pointer", padding: "5px 6px", borderRadius: 3, marginLeft: -6 }}
         >
-          <div style={{ display: "flex", gap: 12, alignItems: "baseline", flexWrap: "wrap" }}>
-            <span style={{ color: "var(--cyan)" }}>{pr.perm}</span>
-            {pr.year && <span style={{ color: "var(--fg-dim)" }}>{pr.year}</span>}
-            <span style={{ color: "var(--blue)", fontWeight: 700 }}>{pr.name}/</span>
-            {pr.lang && <span style={{ color: "var(--purple)", fontSize: "0.85em" }}>[{pr.lang}]</span>}
+          <div style={{ display: "flex", gap: 10, alignItems: "baseline", flexWrap: "wrap" }}>
+            <span style={{ color: "var(--green)" }}>▸</span>
+            <span style={{ color: "var(--blue)", fontWeight: 700 }}>{pr.name}</span>
+            {pr.lang && <span style={{ color: "var(--purple)", fontSize: "0.85em" }}>{pr.lang}</span>}
+            {pr.year && <span style={{ color: "var(--fg-dim)", fontSize: "0.85em" }}>{pr.year}</span>}
             {pr.stars > 0 && <span style={{ color: "var(--yellow)", fontSize: "0.8em" }}>★ {pr.stars}</span>}
           </div>
           <div style={{ color: "var(--fg-dim)", marginLeft: 4, fontSize: "0.92em", marginTop: 2 }}>
@@ -144,15 +144,31 @@ export function ProjectsPane({ projects, onOpen }) {
   );
 }
 
-// ---- skills ---------------------------------------------------------------
-export function SkillsPane() {
+// shared section heading
+function SectionHead({ children }) {
   return (
-    <div>
-      <Prompt cmd="skills --tree" />
+    <div style={{ color: "var(--orange)", fontWeight: 700, margin: "18px 0 8px", letterSpacing: ".03em" }}>
+      <span style={{ color: "var(--fg-dim)" }}># </span>{children}
+    </div>
+  );
+}
+
+const tagStyle = {
+  color: "var(--green)", fontSize: "0.78em",
+  border: "1px solid var(--border)", padding: "1px 6px", borderRadius: 3,
+};
+
+// ---- qualifications (skills + education + certifications) ------------------
+export function QualificationsPane() {
+  return (
+    <div style={{ maxWidth: 760 }}>
+      <Prompt cmd="cat qualifications.txt" />
+
+      <SectionHead>skills</SectionHead>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))", gap: "16px 28px" }}>
         {P.skills.map((g) => (
           <div key={g.cat}>
-            <div style={{ color: "var(--orange)", fontWeight: 700, marginBottom: 4 }}>
+            <div style={{ color: "var(--blue)", fontWeight: 700, marginBottom: 4 }}>
               <span style={{ color: "var(--fg-dim)" }}>▸ </span>{g.cat}
             </div>
             {g.items.map((it, i) => (
@@ -163,33 +179,66 @@ export function SkillsPane() {
           </div>
         ))}
       </div>
+
+      <SectionHead>education</SectionHead>
+      {P.education.map((e) => (
+        <div key={e.school} style={{ marginBottom: 10 }}>
+          <div style={{ color: "var(--blue)", fontWeight: 700 }}>{e.school}</div>
+          <div style={{ color: "var(--fg)" }}>{e.degree}</div>
+          <div style={{ color: "var(--fg-dim)", fontSize: "0.85em" }}>{e.period}</div>
+        </div>
+      ))}
+
+      <SectionHead>certifications</SectionHead>
+      {P.certifications.map((c) => (
+        <div key={c.name} style={{ marginBottom: 10 }}>
+          <div style={{ display: "flex", gap: 10, alignItems: "baseline", flexWrap: "wrap" }}>
+            <span style={{ color: "var(--green)" }}>✓</span>
+            <span style={{ color: "var(--fg)", fontWeight: 600 }}>{c.name}</span>
+          </div>
+          <div style={{ color: "var(--fg-dim)", fontSize: "0.85em", marginLeft: 18 }}>
+            {c.issuer} · {c.date}
+            {c.credId && <span> · id {c.credId}</span>}
+          </div>
+          {c.skills && c.skills.length > 0 && (
+            <div style={{ marginLeft: 18, marginTop: 4, display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {c.skills.map((s) => <span key={s} style={tagStyle}>{s}</span>)}
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 }
 
-// ---- resume timeline ------------------------------------------------------
-export function ResumePane() {
+// ---- work experience timeline ---------------------------------------------
+export function ExperiencePane() {
   return (
     <div>
-      <Prompt cmd="git log --oneline --graph career" />
-      <div style={{ maxWidth: 720 }}>
-        {P.resume.map((r, i) => (
-          <div key={i} style={{ display: "flex", gap: 14 }}>
+      <Prompt cmd="cat work-experience.log" />
+      <div style={{ maxWidth: 760 }}>
+        {P.experience.map((e, i) => (
+          <div key={`${e.org}-${e.role}`} style={{ display: "flex", gap: 14 }}>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
               <span style={{ color: "var(--yellow)" }}>●</span>
-              {i < P.resume.length - 1 && <span style={{ flex: 1, width: 1, background: "var(--border)", margin: "2px 0" }} />}
+              {i < P.experience.length - 1 && <span style={{ flex: 1, width: 1, background: "var(--border)", margin: "2px 0" }} />}
             </div>
-            <div style={{ paddingBottom: 18 }}>
+            <div style={{ paddingBottom: 20 }}>
               <div style={{ display: "flex", gap: 10, alignItems: "baseline", flexWrap: "wrap" }}>
-                <span style={{ color: "var(--blue)", fontWeight: 700 }}>{r.role}</span>
-                <span style={{ color: "var(--fg-dim)", fontSize: "0.85em" }}>{r.period}</span>
+                <span style={{ color: "var(--blue)", fontWeight: 700 }}>{e.role}</span>
+                <span style={{ color: "var(--purple)", fontSize: "0.8em" }}>{e.type}</span>
               </div>
-              <div style={{ color: "var(--green)", fontSize: "0.9em", marginBottom: 4 }}>{r.org}</div>
-              {r.points.map((pt, j) => (
-                <div key={j} style={{ color: "var(--fg-dim)", lineHeight: 1.6, fontSize: "0.92em" }}>
-                  <span style={{ color: "var(--purple)" }}>↳ </span>{pt}
+              <div style={{ color: "var(--green)", fontSize: "0.92em" }}>{e.org}</div>
+              <div style={{ color: "var(--fg-dim)", fontSize: "0.85em", marginTop: 2 }}>
+                {e.period} · {e.duration}
+              </div>
+              <div style={{ color: "var(--fg-dim)", fontSize: "0.85em" }}>{e.location}</div>
+              {e.skills && e.skills.length > 0 && (
+                <div style={{ marginTop: 6, display: "flex", gap: 6, flexWrap: "wrap", alignItems: "baseline" }}>
+                  {e.skills.map((s) => <span key={s} style={tagStyle}>{s}</span>)}
+                  {e.more > 0 && <span style={{ color: "var(--fg-dim)", fontSize: "0.78em" }}>+{e.more} more</span>}
                 </div>
-              ))}
+              )}
             </div>
           </div>
         ))}

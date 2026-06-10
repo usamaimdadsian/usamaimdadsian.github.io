@@ -14,10 +14,10 @@ import { useNav } from "./nav";
 import { canScrollFurther } from "@/lib/scroll";
 
 // top-to-bottom dashboard tiles, then the extra status-bar windows
-const ORDER = ["/", "/about", "/projects", "/skills", "/resume", "/contact"];
+const ORDER = ["/", "/about", "/projects", "/qualifications", "/experience", "/contact"];
 const NAMES = {
   "/": "dashboard", "/about": "about", "/projects": "projects",
-  "/skills": "skills", "/resume": "resume", "/contact": "contact",
+  "/qualifications": "qualifications", "/experience": "experience", "/contact": "contact",
 };
 
 const THRESHOLD = 450; // accumulated wheel delta needed to commit the page change

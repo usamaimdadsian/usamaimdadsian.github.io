@@ -62,7 +62,7 @@ a { color: inherit; text-decoration: none; }
   grid-template-rows: minmax(0, 1.0fr) minmax(0, 1.1fr) minmax(0, 0.85fr);
   grid-template-areas:
     "about projects"
-    "skills resume"
+    "quals experience"
     "shell shell";
 }
 .workarea--stack { display: flex; flex-direction: column; gap: 1px; }
@@ -150,7 +150,8 @@ a { color: inherit; text-decoration: none; }
 .sb-windows { display: flex; align-items: stretch; }
 .sb-win {
   background: none; border: none; color: var(--status-fg); cursor: pointer;
-  font: inherit; padding: 0 12px; opacity: .65; display: flex; align-items: center;
+  font: inherit; padding: 0 9px; opacity: .65; display: flex; align-items: center;
+  white-space: nowrap;
 }
 .sb-win:hover { opacity: .9; }
 .sb-win--active { opacity: 1; background: rgba(0, 0, 0, .28); font-weight: 700; }
@@ -233,7 +234,7 @@ a { color: inherit; text-decoration: none; }
   .workarea--tiled {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto auto auto auto;
-    grid-template-areas: "about" "projects" "skills" "resume" "shell";
+    grid-template-areas: "about" "projects" "quals" "experience" "shell";
     overflow-y: auto;
   }
   .workarea--tiled .pane { min-height: 220px; }
@@ -243,14 +244,22 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 1024px) {
   .sb-keys { display: none; }
 }
+/* trim the right cluster before the window list would overflow */
+@media (max-width: 860px) {
+  .sb-host { display: none; }
+}
+@media (max-width: 680px) {
+  .sb-date { display: none; }
+}
 
 /* ---------------- standalone document pages (project README, resume) ---- */
 .doc {
-  height: 100%; overflow-y: auto; background: var(--bg); color: var(--fg);
+  flex: 1; min-height: 0; overflow-y: auto; background: var(--bg); color: var(--fg);
 }
 .doc__inner { max-width: 820px; margin: 0 auto; padding: 40px 24px 80px; }
 .doc__back {
   display: inline-flex; gap: 6px; color: var(--green); margin-bottom: 24px;
+  background: none; border: none; padding: 0; font: inherit; cursor: pointer;
 }
 .doc__back:hover { color: var(--active-border); }
 .doc__kicker { color: var(--fg-dim); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }

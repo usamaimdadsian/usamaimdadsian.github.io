@@ -8,7 +8,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Pane from "./Pane";
 import { useNav } from "./nav";
-import { AboutPane, ProjectsPane, SkillsPane, ResumePane } from "./Panes";
+import { AboutPane, ProjectsPane, QualificationsPane, ExperiencePane } from "./Panes";
 import { ShellPane } from "./Shell";
 
 // pane id → its dedicated route, tiled grid slot, and the digit that jumps to it
@@ -16,21 +16,21 @@ import { ShellPane } from "./Shell";
 const PANES = [
   { id: "about", title: "about", href: "/about", area: "about", key: 1 },
   { id: "projects", title: "projects", href: "/projects", area: "projects", key: 2 },
-  { id: "skills", title: "skills", href: "/skills", area: "skills", key: 3 },
-  { id: "resume", title: "resume", href: "/resume", area: "resume", key: 4 },
+  { id: "qualifications", title: "qualifications", href: "/qualifications", area: "quals", key: 3 },
+  { id: "experience", title: "experience", href: "/experience", area: "experience", key: 4 },
   { id: "shell", title: "shell", href: null, area: "shell", key: null },
 ];
 
 // Spatial neighbours for arrow-key / hjkl focus movement, matching the grid:
-//   about    projects
-//   skills   resume
+//   about           projects
+//   qualifications  experience
 //   shell  (spans both columns)
 const NAV = {
-  about: { right: "projects", down: "skills" },
-  projects: { left: "about", down: "resume" },
-  skills: { up: "about", right: "resume", down: "shell" },
-  resume: { up: "projects", left: "skills", down: "shell" },
-  shell: { up: "skills" },
+  about: { right: "projects", down: "qualifications" },
+  projects: { left: "about", down: "experience" },
+  qualifications: { up: "about", right: "experience", down: "shell" },
+  experience: { up: "projects", left: "qualifications", down: "shell" },
+  shell: { up: "qualifications" },
 };
 
 const DIRS = {
@@ -108,8 +108,8 @@ export default function Dashboard({ projects }) {
     switch (id) {
       case "about": return <AboutPane />;
       case "projects": return <ProjectsPane projects={projects} onOpen={openProject} />;
-      case "skills": return <SkillsPane />;
-      case "resume": return <ResumePane />;
+      case "qualifications": return <QualificationsPane />;
+      case "experience": return <ExperiencePane />;
       case "shell": return <ShellPane ctx={ctx} projects={projects} history={history} setHistory={setHistory} />;
       default: return null;
     }

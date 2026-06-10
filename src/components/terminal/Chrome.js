@@ -23,13 +23,13 @@ const FONTS = {
 };
 
 // Status-bar windows are routes. The array index is the digit shortcut:
-// 0 dashboard · 1 about · 2 projects · 3 skills · 4 resume · 5 contact.
+// 0 dashboard · 1 about · 2 projects · 3 qualifications · 4 experience · 5 contact.
 export const NAV = [
   { name: "dashboard", href: "/" },
   { name: "about", href: "/about" },
   { name: "projects", href: "/projects" },
-  { name: "skills", href: "/skills" },
-  { name: "resume", href: "/resume" },
+  { name: "qualifications", href: "/qualifications" },
+  { name: "experience", href: "/experience" },
   { name: "contact", href: "/contact" },
 ];
 
@@ -105,18 +105,20 @@ export default function Chrome({ children }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [navigate]);
 
-  // esc / backspace step back to the dashboard from any open pane
+  // esc / backspace step back up one level — a project README → /projects,
+  // a top-level pane → the dashboard.
   useEffect(() => {
+    const parent = pathname.length > 1 ? (pathname.slice(0, pathname.lastIndexOf("/")) || "/") : "/";
     const onKey = (e) => {
       const el = document.activeElement;
       const typing = el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.isContentEditable);
       if (e.key === "Escape") {
         if (typing) { el.blur(); return; } // leave the shell so dashboard arrows work
-        if (pathname !== "/") navigate("/");
+        if (pathname !== "/") navigate(parent);
       } else if (e.key === "Backspace") {
         if (typing) return; // normal text editing
         e.preventDefault();
-        if (pathname !== "/") navigate("/");
+        if (pathname !== "/") navigate(parent);
       }
     };
     window.addEventListener("keydown", onKey);
