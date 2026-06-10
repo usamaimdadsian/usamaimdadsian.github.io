@@ -147,7 +147,7 @@ export const portfolio = {
     { key: "github", label: "GitHub", handle: "usamaimdadsian", url: "https://github.com/usamaimdadsian/" },
     { key: "linkedin", label: "LinkedIn", handle: "usama-imdad", url: "https://www.linkedin.com/in/usama-imdad/" },
     { key: "x", label: "X / Twitter", handle: "@UsamaImdadSian", url: "https://x.com/UsamaImdadSian/" },
-    { key: "youtube", label: "YouTube", handle: "@UsamaImdad", url: "https://www.youtube.com/@UsamaImdad" },
+    { key: "youtube", label: "YouTube", handle: "@UsamaImdadSian", url: "https://www.youtube.com/@UsamaImdadSian" },
     { key: "upwork", label: "Upwork", handle: "Usama Imdad", url: "https://www.upwork.com/freelancers/~011205f723950c7f04" },
     { key: "blog", label: "Blog", handle: "TlueAftab", url: "https://tlueaftab.com/" },
   ],

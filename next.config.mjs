@@ -7,5 +7,6 @@ const nextConfig = {
   },
   assetPrefix: isProd ? '' : '',
   basePath: isProd ? '' : '',
+  output: 'export', // emit a static site to ./out for GitHub Pages
 };
 export default nextConfig;
