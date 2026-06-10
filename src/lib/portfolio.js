@@ -3,6 +3,19 @@
 // Ported from the design prototype (design/data.js). Edit here to update.
 // ============================================================================
 
+// Career began December 2020 — years of experience are derived, never hardcoded.
+const CAREER_START = new Date(2020, 11, 1); // months are 0-indexed → 11 = Dec
+function fullYearsSince(start) {
+  const now = new Date();
+  let years = now.getFullYear() - start.getFullYear();
+  const beforeAnniversary =
+    now.getMonth() < start.getMonth() ||
+    (now.getMonth() === start.getMonth() && now.getDate() < start.getDate());
+  if (beforeAnniversary) years -= 1;
+  return years;
+}
+export const EXPERIENCE_YEARS = fullYearsSince(CAREER_START);
+
 export const portfolio = {
   user: "usama",
   host: "archlinux",
@@ -11,34 +24,21 @@ export const portfolio = {
   // ---- neofetch / system info card -------------------------------------
   system: {
     name: "Usama Imdad",
-    title: "Software Engineer · ML / Full-Stack / IoT / DevOps",
+    title: "Senior Full-Stack ML Engineer | Embedded Systems + Web + AI Integrations",
     photo: "/images/profile.webp",
     os: "Hafizabad, Pakistan",
-    uptime: "4+ years building",
-    de: "Computer Engineering (BS)",
-    wm: "Data Science (MS)",
-    shell: "problem-solver",
-    terminal: "ships intuitive systems",
-    cpu: "Machine Learning",
-    gpu: "Full-Stack Development",
-    memory: "IoT Firmware · DevOps",
+    uptime: `${EXPERIENCE_YEARS}+ years building`,
   },
 
   // ---- whoami / about --------------------------------------------------
   about: [
-    "Hello! My name is Usama Imdad. I'm from a village in Hafizabad,",
-    "Pakistan. I hold a Bachelor's in Computer Engineering and a",
-    "Master's in Data Science.",
+    `I'm a Full-Stack ML Engineer with ${EXPERIENCE_YEARS}+ years of experience building intelligent systems at the intersection of machine learning, embedded systems, and full-stack web development.`,
     "",
-    "As a developer with 4+ years of experience, I'm proficient in",
-    "Machine Learning, Full-Stack Development, IoT development and",
-    "DevOps. My journey is distinguished by building analytical tools,",
-    "IoT firmware and management dashboards that drive operational",
-    "efficiency across firms.",
+    "I specialize in designing and deploying machine learning models for edge and IoT environments, integrating real-time analytics with low-level hardware and high-level interfaces. Whether it's using PyTorch for model training, Arduino for hardware control, or React/Django for web interfaces, I bring a systems-level view to solving complex problems.",
     "",
-    "What sets me apart is a passion for solving difficult problems,",
-    "building state-of-the-art platforms, and automating systems with",
-    "the right set of skills. I occasionally write blogs at TlueAftab.",
+    "My previous roles include building a smart vending machine backend, deploying ML models for video analytics, and working on research projects in computer vision and NLP.",
+    "",
+    "I'm currently open to freelance work and research-driven roles in intelligent systems, embedded ML, or full-stack AI platforms.",
   ],
 
   // ---- skills ----------------------------------------------------------

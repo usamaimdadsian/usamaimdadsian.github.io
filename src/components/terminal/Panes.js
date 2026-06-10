@@ -6,6 +6,7 @@
 // ============================================================================
 import { useState } from "react";
 import { portfolio as P } from "@/lib/portfolio";
+import Icon from "./icons";
 
 // shared bits ---------------------------------------------------------------
 export function Prompt({ cmd }) {
@@ -25,9 +26,7 @@ export function NeofetchPane() {
   const s = P.system;
   const [imgError, setImgError] = useState(false);
   const rows = [
-    ["From", s.os], ["Experience", s.uptime], ["BS", s.de], ["MS", s.wm],
-    ["Shell", s.shell], ["Focus", s.terminal],
-    ["CPU", s.cpu], ["GPU", s.gpu], ["Memory", s.memory],
+    ["From", s.os], ["Experience", s.uptime]
   ];
   const palette = ["--red", "--green", "--yellow", "--blue", "--purple", "--cyan", "--fg", "--fg-dim"];
   return (
@@ -248,28 +247,45 @@ export function ExperiencePane() {
 }
 
 // ---- contact / socials ----------------------------------------------------
+const SOCIAL_COLOR = {
+  email: "--orange", github: "--fg", linkedin: "--blue", x: "--fg",
+  youtube: "--red", upwork: "--green", blog: "--orange",
+};
+
 export function ContactPane() {
+  const email = "usamaimdadsian@gmail.com";
+  const cards = [
+    { key: "email", label: "Email", handle: email, url: `mailto:${email}`, external: false },
+    ...P.socials.map((s) => ({ ...s, external: true })),
+  ];
   return (
     <div>
       <Prompt cmd="cat contact.json" />
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: 8 }}>
-        {P.socials.map((s) => (
+      <div style={{ color: "var(--fg-dim)", marginBottom: 12, maxWidth: 620, lineHeight: 1.6 }}>
+        Open to freelance work and research roles — reach out on any channel below.
+      </div>
+      <div className="contact-grid">
+        {cards.map((s) => (
           <a
             key={s.key}
             href={s.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="social-row"
-            style={{ textDecoration: "none", display: "flex", gap: 10, alignItems: "baseline", padding: "6px 8px", borderRadius: 3, border: "1px solid transparent" }}
+            target={s.external ? "_blank" : undefined}
+            rel={s.external ? "noopener noreferrer" : undefined}
+            className="contact-card"
           >
-            <span style={{ color: "var(--yellow)", minWidth: 84, display: "inline-block" }}>{s.label}</span>
-            <span style={{ color: "var(--fg-dim)" }}>→</span>
-            <span style={{ color: "var(--blue)" }}>{s.handle}</span>
+            <span className="contact-card__icon" style={{ color: `var(${SOCIAL_COLOR[s.key] || "--green"})` }}>
+              <Icon name={s.key} />
+            </span>
+            <span className="contact-card__body">
+              <span className="contact-card__label">{s.label}</span>
+              <span className="contact-card__handle">{s.handle}</span>
+            </span>
+            <span className="contact-card__arrow">↗</span>
           </a>
         ))}
       </div>
-      <div style={{ color: "var(--fg-dim)", marginTop: 12, fontSize: "0.85em" }}>
-        <span style={{ color: "var(--green)" }}>tip</span> · type <span style={{ color: "var(--yellow)" }}>open github</span> to launch any link
+      <div style={{ color: "var(--fg-dim)", marginTop: 14, fontSize: "0.85em" }}>
+        <span style={{ color: "var(--green)" }}>tip</span> · type <span style={{ color: "var(--yellow)" }}>open github</span> in the shell to launch any link
       </div>
     </div>
   );

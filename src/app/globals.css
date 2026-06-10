@@ -117,7 +117,27 @@ a { color: inherit; text-decoration: none; }
 .pane__body::-webkit-scrollbar-track { background: transparent; }
 
 .proj-row:hover { background: var(--bg-alt); }
-.social-row:hover { border-color: var(--border) !important; background: var(--bg-alt); }
+
+/* ---------------- contact cards ---------------- */
+.contact-grid {
+  display: grid; gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}
+.contact-card {
+  display: flex; align-items: center; gap: 12px; text-decoration: none;
+  padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px;
+  background: var(--bg-alt); transition: border-color .15s, transform .15s;
+}
+.contact-card:hover { border-color: var(--active-border); transform: translateY(-1px); }
+.contact-card__icon { display: flex; align-items: center; }
+.contact-card__body { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.contact-card__label { color: var(--fg); font-weight: 600; font-size: .92em; }
+.contact-card__handle {
+  color: var(--fg-dim); font-size: .82em;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.contact-card__arrow { color: var(--fg-dim); flex: 0 0 auto; }
+.contact-card:hover .contact-card__arrow { color: var(--active-border); }
 
 /* ---------------- navigation loading bar ---------------- */
 .navload {
@@ -143,6 +163,7 @@ a { color: inherit; text-decoration: none; }
   user-select: none;
 }
 .statusbar__left, .statusbar__right { display: flex; align-items: stretch; }
+.statusbar__left { position: relative; }
 .sb-session {
   background: rgba(0, 0, 0, .22); display: flex; align-items: center;
   padding: 0 6px; font-weight: 700;
@@ -229,6 +250,40 @@ a { color: inherit; text-decoration: none; }
   border-color: var(--active-border); font-weight: 700;
 }
 
+/* ---------------- mobile navigation expander ---------------- */
+.sb-nav-toggle {
+  display: none; align-items: center; gap: 8px;
+  background: none; border: none; color: var(--status-fg);
+  font: inherit; cursor: pointer; padding: 0 10px; opacity: .92;
+}
+.sb-nav-toggle__bars { font-size: 15px; line-height: 1; }
+.sb-nav-toggle__cur { font-weight: 700; }
+.sb-nav-toggle__chev { opacity: .7; font-size: 10px; }
+.sb-menu-backdrop {
+  position: fixed; inset: 0; z-index: 60;
+  background: transparent; border: none; padding: 0;
+}
+.sb-menu {
+  position: absolute; left: 6px; bottom: 100%; margin-bottom: 5px; z-index: 61;
+  min-width: 210px; background: var(--bg-alt);
+  border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, .45);
+}
+.sb-menu__item {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  background: none; border: none; border-bottom: 1px solid var(--border);
+  color: var(--fg); cursor: pointer; font: inherit; text-align: left;
+  padding: 11px 14px;
+}
+.sb-menu__item:last-child { border-bottom: none; }
+.sb-menu__item:hover { background: var(--bg); }
+.sb-menu__item--active { color: var(--active-border); font-weight: 700; }
+.sb-menu__num {
+  color: var(--status-fg); background: var(--fg-dim); border-radius: 2px;
+  padding: 0 7px; font-size: 11px; font-weight: 700;
+}
+.sb-menu__item--active .sb-menu__num { background: var(--active-border); }
+
 /* ---------------- responsive ---------------- */
 @media (max-width: 760px) {
   .workarea--tiled {
@@ -244,12 +299,18 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 1024px) {
   .sb-keys { display: none; }
 }
-/* trim the right cluster before the window list would overflow */
+/* trim the right cluster before the window list would overflow.
+   (the .statusbar__right prefix is needed to beat `.statusbar__right > span`) */
 @media (max-width: 860px) {
-  .sb-host { display: none; }
+  .statusbar__right .sb-host { display: none; }
 }
+/* phones: drop the clock + inline windows, surface the expander menu instead */
 @media (max-width: 680px) {
-  .sb-date { display: none; }
+  .sb-windows, .sb-session { display: none; }
+  .statusbar__right .sb-date,
+  .statusbar__right .sb-time { display: none; }
+  .sb-nav-toggle { display: flex; }
+  .statusbar { height: 32px; }
 }
 
 /* ---------------- standalone document pages (project README, resume) ---- */

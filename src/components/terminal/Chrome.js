@@ -44,6 +44,7 @@ export default function Chrome({ children }) {
   const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
   const [clock, setClock] = useState(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [navOpen, setNavOpen] = useState(false);
   const [pending, startTransition] = useTransition();
 
   // route changes go through a transition: the current page stays put and the
@@ -125,6 +126,12 @@ export default function Chrome({ children }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [navigate, pathname]);
 
+  // close the mobile nav menu whenever the route changes
+  useEffect(() => { setNavOpen(false); }, [pathname]);
+
+  const curIdx = NAV.findIndex((w) => isActive(pathname, w.href));
+  const current = NAV[curIdx] || NAV[0];
+
   return (
     <NavContext.Provider value={{ navigate, pending }}>
     <div className="tmux">
@@ -138,6 +145,8 @@ export default function Chrome({ children }) {
           <span className={"sb-session" + (pending ? " sb-session--busy" : "")}>
             {pending ? " ⣷ loading " : `  ${P.user} `}
           </span>
+
+          {/* desktop: full inline window list */}
           <span className="sb-windows">
             {NAV.map((w, i) => (
               <Link
@@ -146,10 +155,44 @@ export default function Chrome({ children }) {
                 onClick={(e) => { e.preventDefault(); navigate(w.href); }}
                 className={"sb-win" + (isActive(pathname, w.href) ? " sb-win--active" : "")}
               >
-                {i}:{w.name}{isActive(pathname, w.href) ? "*" : ""}
+                {i}<span className="sb-win__name">:{w.name}{isActive(pathname, w.href) ? "*" : ""}</span>
               </Link>
             ))}
           </span>
+
+          {/* mobile: expander that reveals the full window names */}
+          <button
+            type="button"
+            className="sb-nav-toggle"
+            aria-expanded={navOpen}
+            aria-label="navigation menu"
+            onClick={() => setNavOpen((o) => !o)}
+          >
+            <span className="sb-nav-toggle__bars">{navOpen ? "✕" : "≡"}</span>
+            <span className="sb-nav-toggle__cur">{curIdx < 0 ? 0 : curIdx}:{current.name}</span>
+            <span className="sb-nav-toggle__chev">{navOpen ? "▾" : "▴"}</span>
+          </button>
+
+          {navOpen && (
+            <>
+              <button className="sb-menu-backdrop" aria-hidden="true" tabIndex={-1} onClick={() => setNavOpen(false)} />
+              <div className="sb-menu" role="menu">
+                {NAV.map((w, i) => (
+                  <button
+                    key={w.href}
+                    type="button"
+                    role="menuitem"
+                    className={"sb-menu__item" + (isActive(pathname, w.href) ? " sb-menu__item--active" : "")}
+                    onClick={() => { setNavOpen(false); navigate(w.href); }}
+                  >
+                    <span className="sb-menu__num">{i}</span>
+                    <span>{w.name}</span>
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+
           <span className="sb-keys">
             {pathname === "/" ? "↑↓←→/hjkl move · ↵/f open · 0-5 jump" : "keep scrolling to reveal next · esc/⌫ back · 0-5 jump"}
           </span>
