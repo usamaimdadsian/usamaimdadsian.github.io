@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { getPublicRepositories, getRepositoryProject, GITHUB_OWNER } from "@/lib/github";
+import { getRepositoryReadme, GITHUB_OWNER } from "@/lib/github";
+import { getProject, getProjectSlugs } from "@/lib/strapi";
 import { markdownToHtml } from "@/lib/markdown";
-import styles from "./project.module.css";
+
+export const revalidate = 3600;
 
 function formatDate(value) {
   if (!value) {
@@ -16,103 +17,111 @@ function formatDate(value) {
   }).format(new Date(value));
 }
 
+// README comes live from GitHub when possible; the Strapi-stored copy is the
+// fallback for when GitHub is rate-limited / unreachable.
+async function resolveReadme(repo, cached) {
+  try {
+    const live = await getRepositoryReadme(repo);
+    if (live && live.content && live.content.trim()) return live.content;
+  } catch {
+    /* fall through to cache */
+  }
+  return cached || "";
+}
+
 export async function generateStaticParams() {
-  const repositories = await getPublicRepositories();
-  return repositories.map((repository) => ({
-    repo: repository.slug,
-  }));
+  const slugs = await getProjectSlugs();
+  return slugs.map((repo) => ({ repo }));
 }
 
 export async function generateMetadata({ params }) {
   const { repo } = await params;
-  const project = await getRepositoryProject(repo);
+  const project = await getProject(repo);
 
   if (!project) {
-    return {
-      title: "Project Not Found",
-    };
+    return { title: "Project Not Found" };
   }
 
   return {
-    title: `${project.name} | Projects`,
+    title: `${project.name} | projects`,
     description: project.description,
   };
 }
 
 export default async function ProjectDetailPage({ params }) {
   const { repo } = await params;
-  const project = await getRepositoryProject(repo);
+  const project = await getProject(repo);
 
+  // Not in Strapi (or backend down): degrade to a card that still links out.
   if (!project) {
-    notFound();
+    const repoUrl = `https://github.com/${GITHUB_OWNER}/${repo}`;
+    return (
+      <div className="doc">
+        <div className="doc__inner">
+          <Link className="doc__back" href="/projects">← back to projects</Link>
+          <p className="doc__kicker">cat ~/projects/{repo}/README.md</p>
+          <h1 className="doc__title">{repo}</h1>
+          <p className="doc__desc">
+            This project couldn&apos;t be loaded right now — the backend was unavailable. You can
+            still open the repository directly on GitHub.
+          </p>
+          <div className="doc__actions">
+            <a className="doc__btn" href={repoUrl} target="_blank" rel="noopener noreferrer">
+              Open on GitHub ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    );
   }
 
-  const articleHtml = markdownToHtml(project.readme.content);
+  const readme = await resolveReadme(repo, project.readme);
+  const articleHtml = markdownToHtml(readme);
+  const topics = Array.isArray(project.topics) ? project.topics : [];
 
   return (
-    <div className={styles.page}>
-      <section className={styles.hero}>
-        <div className={styles.heroCopy}>
-          <p className={styles.kicker}>Project</p>
-          <h1 className={styles.title}>{project.name}</h1>
-          <p className={styles.description}>{project.description}</p>
-          <div className={styles.actions}>
-            <a className={styles.primaryButton} href={project.htmlUrl} target="_blank" rel="noopener noreferrer">
-              Open Repository
+    <div className="doc">
+      <div className="doc__inner">
+        <Link className="doc__back" href="/">← back to ~/portfolio</Link>
+
+        <p className="doc__kicker">cat ~/projects/{project.name}/README.md</p>
+        <h1 className="doc__title">{project.name}</h1>
+        <p className="doc__desc">{project.description}</p>
+
+        <div className="doc__actions">
+          <a className="doc__btn" href={project.htmlUrl} target="_blank" rel="noopener noreferrer">
+            Open Repository ↗
+          </a>
+          {project.homepage ? (
+            <a className="doc__btn" href={project.homepage} target="_blank" rel="noopener noreferrer">
+              Live Link ↗
             </a>
-            {project.homepage ? (
-              <a className={styles.secondaryButton} href={project.homepage} target="_blank" rel="noopener noreferrer">
-                Open Live Link
-              </a>
-            ) : null}
-            <Link className={styles.ghostButton} href="/projects">
-              Back to Projects
-            </Link>
-          </div>
+          ) : null}
         </div>
-        <aside className={styles.metaPanel}>
-          <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>Owner</span>
-            <strong className={styles.metaValue}>{GITHUB_OWNER}</strong>
-          </div>
-          <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>Language</span>
-            <strong className={styles.metaValue}>{project.language || "Not specified"}</strong>
-          </div>
-          <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>Last Updated</span>
-            <strong className={styles.metaValue}>{formatDate(project.updatedAt)}</strong>
-          </div>
-          <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>README Source</span>
-            <strong className={styles.metaValue}>{project.readme.path}</strong>
-          </div>
-        </aside>
-      </section>
 
-      {project.topics.length > 0 ? (
-        <section className={styles.topicsSection}>
-          {project.topics.map((topic) => (
-            <span key={topic} className={styles.topic}>
-              {topic}
-            </span>
-          ))}
-        </section>
-      ) : null}
-
-      <section className={styles.articleShell}>
-        <div className={styles.articleHeader}>
-          <p className={styles.kicker}>README</p>
-          <h2 className={styles.articleTitle}>Project details rendered as a blog-style article.</h2>
+        <div className="doc__meta">
+          <span>owner <b>{GITHUB_OWNER}</b></span>
+          <span>lang <b>{project.language || "—"}</b></span>
+          <span>updated <b>{formatDate(project.pushedAt)}</b></span>
+          <span>★ <b>{project.stars ?? 0}</b></span>
         </div>
+
+        {topics.length > 0 ? (
+          <div className="doc__topics">
+            {topics.map((topic) => (
+              <span key={topic} className="doc__topic">{topic}</span>
+            ))}
+          </div>
+        ) : null}
+
         {articleHtml ? (
-          <article className={styles.article} dangerouslySetInnerHTML={{ __html: articleHtml }} />
+          <article className="doc__article" dangerouslySetInnerHTML={{ __html: articleHtml }} />
         ) : (
-          <article className={styles.article}>
-            <p>No README content was available for this repository at build time.</p>
+          <article className="doc__article">
+            <p>No README content is available for this repository.</p>
           </article>
         )}
-      </section>
+      </div>
     </div>
   );
 }

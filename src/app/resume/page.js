@@ -1,28 +1,23 @@
-import Link from "next/link";
-import styles from "./resumePublic.module.css";
+import Chrome from "@/components/terminal/Chrome";
+import SinglePane from "@/components/terminal/SinglePane";
+import { ResumePane } from "@/components/terminal/Panes";
 
 export const metadata = {
-  title: "Resume Access",
-  description: "Public resume access information",
+  title: "resume | usama@archlinux",
+  description: "Experience timeline",
+  robots: { index: false, follow: false },
 };
 
 export default function ResumePage() {
   return (
-    <section className={styles.page}>
-      <div className={styles.card}>
-        <p className={styles.kicker}>Resume</p>
-        <h1>Resume downloads are private.</h1>
-        <p>
-          I keep multiple tailored resume versions, so the full resume data is available only from the protected admin area.
-          Public visitors can still review my general background, selected projects, and capability areas without exposing
-          confidential resume details.
-        </p>
-        <div className={styles.actions}>
-          <Link href="/projects">View Projects</Link>
-          <Link href="/about">General Background</Link>
-          <Link href="/admin/resume">Admin Login</Link>
+    <Chrome>
+      <SinglePane title="resume">
+        <ResumePane />
+        <div style={{ marginTop: 18, paddingTop: 12, borderTop: "1px solid var(--border)", color: "var(--fg-dim)", fontSize: "0.85em", maxWidth: 720 }}>
+          <span style={{ color: "var(--green)" }}>note</span> · downloadable resume files are kept private — I tailor a
+          version per role. Reach out via the <span style={{ color: "var(--yellow)" }}>contact</span> window for a copy.
         </div>
-      </div>
-    </section>
+      </SinglePane>
+    </Chrome>
   );
 }
